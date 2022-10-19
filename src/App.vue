@@ -6,11 +6,19 @@
       <h1>Pinia Tasks</h1>
     </header>
 
+    <!-- new task form -->
+    <div class="new-task-form">
+      <TaskForm/>
+    </div>
+
     <!-- filter -->
     <nav class="filter">
       <button @click="filter = 'all'">All tasks</button>
       <button @click="filter = 'favs'">Favs tasks</button>
     </nav>
+
+    <!-- loading -->
+    <div class="loading" v-if="taskStore.loading">Loading tasks...</div>
 
     <!-- Task list -->
     <div class="task-list" v-if="filter === 'all'">
@@ -31,12 +39,16 @@
 <script>
 import { ref } from '@vue/reactivity'
 import TaskDetails from './components/TaskDetails.vue'
+import TaskForm from './components/TaskForm.vue'
 import { useTaskStore } from './stores/TaskStore'
 
 export default {
-  components: {TaskDetails},
+  components: {TaskDetails, TaskForm},
   setup(){
     const taskStore = useTaskStore()
+
+    //fetch tasks
+    taskStore.getTasks()
 
     const filter = ref('all')
 
